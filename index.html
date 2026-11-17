@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090910">
+<title>LIMITLESS</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090910;color:#f5f2ff;font-family:Arial,sans-serif}
+header{padding:24px;background:linear-gradient(135deg,#30204b,#100e19)}
+.logo{font-size:28px;font-weight:900;letter-spacing:4px}
+.tag{color:#b58aff;font-size:11px;letter-spacing:3px;margin-top:5px}
+main{max-width:650px;margin:auto;padding:16px 14px 100px}
+.page{display:none}.page.active{display:block}
+.card{background:#171522;border:1px solid #352c46;border-radius:16px;padding:17px;margin:14px 0}
+.hero{background:linear-gradient(135deg,#34214e,#171321)}
+h2{font-size:21px}
+p,.muted{color:#aaa3b9;font-size:13px;line-height:1.5}
+.big{font-size:36px;font-weight:bold;margin:12px 0}
+.bar{height:9px;background:#393047;border-radius:20px;overflow:hidden;margin:12px 0}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#8956ee,#d27aff)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#211d2c;padding:13px 5px;text-align:center;border-radius:12px}
+.stat strong{display:block;font-size:20px}
+.stat small{color:#aaa3b9;font-size:10px}
+button{background:#9669ed;color:white;border:0;padding:11px 14px;border-radius:10px;font-weight:bold}
+button:disabled{background:#315a49}
+input,select{display:block;width:100%;padding:12px;margin:9px 0;background:#0e0d16;color:white;border:1px solid #403650;border-radius:9px;font-size:15px}
+.task{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #393047;font-size:13px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#15121e;border-top:1px solid #393047;display:flex;padding:8px 2px calc(8px + env(safe-area-inset-bottom))}
+.tabs button{flex:1;background:transparent;color:#aaa3b9;padding:9px 2px;font-size:10px}
+.tabs button.active{color:#c49cff}
+.tabs span{display:block;font-size:18px;margin-bottom:4px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">LIMITLESS</div>
+<div class="tag">EVOLVE WITHOUT END.</div>
+</header>
+<main>
+
+<section class="page active" id="home">
+<p>YOUR JOURNEY STARTS HERE</p>
+<div class="card hero">
+<div class="muted">CURRENT LEVEL</div>
+<div class="big" id="level">LEVEL 1</div>
+<div id="xp">0 XP</div>
+<div class="bar"><div class="fill" id="xpbar"></div></div>
+<div class="muted" id="next">100 XP until next level</div>
+</div>
+<div class="stats">
+<div class="stat"><strong id="tasks">0</strong><small>TASKS DONE</small></div>
+<div class="stat"><strong id="workouts">0</strong><small>WORKOUTS</small></div>
+<div class="stat"><strong id="goalscount">0</strong><small>GOALS</small></div>
+</div>
+<div class="card">
+<h3>YOUR JOURNEY</h3>
+<p id="welcome">Every small action moves you forward.</p>
+<button onclick="go('routines')">View routines</button>
+</div>
+<div class="card">
+<h3>THE LIMITLESS PHILOSOPHY</h3>
+<p>No maximum level. No final evolution. Your journey keeps going.</p>
+</div>
+</section>
+
+<section class="page" id="routines">
+<h2>Daily routines</h2>
+<p>Complete tasks to earn experience.</p>
+<div class="card"><h3>Morning</h3><div id="morning"></div></div>
+<div class="card"><h3>After school</h3><div id="afternoon"></div></div>
+<div class="card"><h3>Night</h3><div id="night"></div></div>
+<div class="card">
+<h3>Create a task</h3>
+<input id="taskname" placeholder="Enter your task">
+<select id="taskgroup">
+<option value="morning">Morning</option>
+<option value="afternoon">After school</option>
+<option value="night">Night</option>
+</select>
+<button onclick="addTask()">Add task</button>
+</div>
+</section>
+
+<section class="page" id="fitness">
+<h2>Fitness center</h2>
+<div class="card">
+<h3>Log an activity</h3>
+<input id="activity" placeholder="Workout or activity">
+<input id="minutes" type="number" min="1" placeholder="Duration in minutes">
+<button onclick="addWorkout()">Save activity · +20 XP</button>
+</div>
+<div class="card"><h3>Activity history</h3><div id="history">No activities yet.</div></div>
+</section>
+
+<section class="page" id="planner">
+<h2>Personal planner</h2>
+<div class="card">
+<h3>Add a goal</h3>
+<input id="goal" placeholder="What do you need to do?">
+<button onclick="addGoal()">Add goal</button>
+</div>
+<div class="card"><h3>Your goals</h3><div id="goals">Nothing added yet.</div></div>
+</section>
+
+<section class="page" id="character">
+<h2>Your character</h2>
+<div class="card hero" style="text-align:center">
+<div id="avatar" style="font-size:65px">⚔️</div>
+<h2 id="charname">New Adventurer</h2>
+<p id="charlevel">Level 1 · Beginner</p>
+<p>Your evolution has no final form.</p>
+</div>
+<div class="card">
+<h3>Character creator</h3>
+<input id="name" placeholder="Character name">
+<select id="symbol">
+<option value="⚔️">Warrior ⚔️</option>
+<option value="🛡️">Guardian 🛡️</option>
+<option value="🏹">Archer 🏹</option>
+<option value="🔮">Mage 🔮</option>
+<option value="🗡️">Assassin 🗡️</option>
+</select>
+<button onclick="saveCharacter()">Save character</button>
+</div>
+</section>
+</main>
+
+<nav class="tabs">
+<button class="active" onclick="go('home',this)"><span>⌂</span>Home</button>
+<button onclick="go('routines',this)"><span>✓</span>Routines</button>
+<button onclick="go('fitness',this)"><span>✦</span>Fitness</button>
+<button onclick="go('planner',this)"><span>▤</span>Planner</button>
+<button onclick="go('character',this)"><span>♙</span>Character</button>
+</nav>
+
+<script>
+const defaults={
+morning:["Make your bed","Brush your teeth","Get ready for the day"],
+afternoon:["Complete schoolwork","Work on a personal goal","Get some movement"],
+night:["Prepare for tomorrow","Complete night hygiene","Get ready for bed"]
+};
+
+let d;
+try{d=JSON.parse(localStorage.getItem("limitless"))}catch(e){}
+if(!d)d={
+xp:0,tasks:0,workouts:0,
+routines:defaults,done:{},goals:[],history:[],
+name:"New Adventurer",avatar:"⚔️"
+};
+
+function save(){
+localStorage.setItem("limitless",JSON.stringify(d));
+render();
+}
+function level(){return Math.floor(d.xp/100)+1}
+
+function go(id,btn){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+if(btn)btn.classList.add("active");
+else document.querySelectorAll(".tabs button")[["home","routines","fitness","planner","character"].indexOf(id)].classList.add("active");
+}
+
+function complete(group,i){
+let key=group+"-"+i;
+if(d.done[key])return;
+d.done[key]=true;
+d.xp+=10;
+d.tasks++;
+save();
+}
+
+function addTask(){
+let value=document.getElementById("taskname").value.trim();
+if(!value)return;
+d.routines[document.getElementById("taskgroup").value].push(value);
+document.getElementById("taskname").value="";
+save();
+}
+
+function addWorkout(){
+let name=document.getElementById("activity").value.trim();
+let mins=Number(document.getElementById("minutes").value);
+if(!name||!Number.isFinite(mins)||mins<=0){
+alert("Enter an activity and valid duration.");
+return;
+}
+d.history.unshift(name+" · "+mins+" minutes");
+d.workouts++;
+d.xp+=20;
+document.getElementById("activity").value="";
+document.getElementById("minutes").value="";
+save();
+}
+
+function addGoal(){
+let value=document.getElementById("goal").value.trim();
+if(!value)return;
+d.goals.push({name:value,done:false});
+document.getElementById("goal").value="";
+save();
+}
+
+function finishGoal(i){
+if(d.goals[i].done)return;
+d.goals[i].done=true;
+d.xp+=10;
+save();
+}
+
+function saveCharacter(){
+let name=document.getElementById("name").value.trim();
+if(name)d.name=name;
+d.avatar=document.getElementById("symbol").value;
+save();
+}
+
+function render(){
+let lv=level(),p=d.xp%100;
+document.getElementById("level").textContent="LEVEL "+lv;
+document.getElementById("xp").textContent=d.xp+" XP";
+document.getElementById("xpbar").style.width=p+"%";
+document.getElementById("next").textContent=(100-p)+" XP until next level";
+document.getElementById("tasks").textContent=d.tasks;
+document.getElementById("workouts").textContent=d.workouts;
+document.getElementById("goalscount").textContent=d.goals.length;
+document.getElementById("charname").textContent=d.name;
+document.getElementById("avatar").textContent=d.avatar;
+document.getElementById("charlevel").textContent="Level "+lv+" · Keep evolving";
+document.getElementById("welcome").textContent="You have earned "+d.xp+" XP. Keep moving forward.";
+
+["morning","afternoon","night"].forEach(group=>{
+let el=document.getElementById(group);
+el.innerHTML="";
+d.routines[group].forEach((task,i)=>{
+let key=group+"-"+i;
+let row=document.createElement("div");
+row.className="task";
+let name=document.createElement("span");
+name.textContent=task;
+let button=document.createElement("button");
+button.textContent=d.done[key]?"Done":"Complete +10 XP";
+button.disabled=!!d.done[key];
+button.onclick=()=>complete(group,i);
+row.append(name,button);
+el.append(row);
+});
+});
+
+let history=document.getElementById("history");
+history.innerHTML="";
+if(!d.history.length)history.textContent="No activities yet.";
+d.history.forEach(item=>{
+let p=document.createElement("p");
+p.textContent=item;
+history.append(p);
+});
+
+let goals=document.getElementById("goals");
+goals.innerHTML="";
+if(!d.goals.length)goals.textContent="Nothing added yet.";
+d.goals.forEach((item,i)=>{
+let row=document.createElement("div");
+row.className="task";
+let name=document.createElement("span");
+name.textContent=item.name;
+let button=document.createElement("button");
+button.textContent=item.done?"Done":"Complete +10 XP";
+button.disabled=item.done;
+button.onclick=()=>finishGoal(i);
+row.append(name,button);
+goals.append(row);
+});
+}
+render();
+</script>
+</body>
+</html>
